@@ -2,9 +2,6 @@ import { useEffect, useRef, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
-import CustomCursor from '@/components/CustomCursor';
 import MagneticButton from '@/components/MagneticButton';
 import TextScramble from '@/components/TextScramble';
 
@@ -115,8 +112,6 @@ const Services = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <CustomCursor />
-      <Navigation />
 
       {/* Hero */}
       <section className="pt-24 pb-12 sm:pt-32 sm:pb-20 md:pt-40 md:pb-32 relative overflow-hidden">
@@ -225,7 +220,6 @@ const Services = () => {
         </div>
       </section>
 
-      <Footer />
     </div>
   );
 };

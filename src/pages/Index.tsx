@@ -3,9 +3,6 @@ import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
-import CustomCursor from '@/components/CustomCursor';
 import FeaturedProjects from '@/components/FeaturedProjects';
 import MagneticButton from '@/components/MagneticButton';
 import TextScramble from '@/components/TextScramble';
@@ -149,8 +146,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <CustomCursor />
-      <Navigation />
 
       {/* Hero Section */}
       <section ref={heroRef} className="relative h-screen flex items-center overflow-hidden">
@@ -319,7 +314,6 @@ const Index = () => {
         </div>
       </section>
 
-      <Footer />
     </div>
   );
 };

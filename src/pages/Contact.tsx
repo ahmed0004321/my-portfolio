@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
-import CustomCursor from '@/components/CustomCursor';
 import MagneticButton from '@/components/MagneticButton';
 import TextScramble from '@/components/TextScramble';
 import { toast } from 'sonner';
@@ -97,8 +94,6 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
-      <CustomCursor />
-      <Navigation />
 
       {/* Three.js Background */}
       <Suspense fallback={null}>
@@ -147,8 +142,8 @@ const Contact = () => {
                 {formFields.map((field) => (
                   <div key={field.name} className="form-field relative group">
                     <label className={`absolute left-4 sm:left-6 transition-all duration-300 pointer-events-none text-sm sm:text-base ${focusedField === field.name || formState[field.name as keyof typeof formState]
-                        ? 'top-1.5 sm:top-2 text-[10px] sm:text-xs text-primary'
-                        : 'top-1/2 -translate-y-1/2 text-muted-foreground'
+                      ? 'top-1.5 sm:top-2 text-[10px] sm:text-xs text-primary'
+                      : 'top-1/2 -translate-y-1/2 text-muted-foreground'
                       }`}>
                       {field.label}
                     </label>
@@ -171,8 +166,8 @@ const Contact = () => {
 
                 <div className="form-field relative group">
                   <label className={`absolute left-4 sm:left-6 transition-all duration-300 pointer-events-none text-sm sm:text-base ${focusedField === 'message' || formState.message
-                      ? 'top-1.5 sm:top-2 text-[10px] sm:text-xs text-primary'
-                      : 'top-4 sm:top-6 text-muted-foreground'
+                    ? 'top-1.5 sm:top-2 text-[10px] sm:text-xs text-primary'
+                    : 'top-4 sm:top-6 text-muted-foreground'
                     }`}>
                     Message
                   </label>
@@ -270,7 +265,6 @@ const Contact = () => {
         </div>
       </section>
 
-      <Footer />
     </div>
   );
 };

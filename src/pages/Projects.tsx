@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
-import CustomCursor from '@/components/CustomCursor';
 import TextScramble from '@/components/TextScramble';
 import project1 from '@/assets/project-1.jpg';
 import project2 from '@/assets/project-2.jpg';
@@ -97,8 +94,6 @@ const Projects = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <CustomCursor />
-      <Navigation />
 
       {/* Hero */}
       <section className="pt-24 pb-10 sm:pt-32 sm:pb-16 md:pt-40 md:pb-20 relative overflow-hidden">
@@ -253,7 +248,6 @@ const Projects = () => {
         </div>
       )}
 
-      <Footer />
     </div>
   );
 };

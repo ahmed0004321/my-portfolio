@@ -71,15 +71,15 @@ const Navigation = () => {
         </nav>
       </header>
 
-      <div ref={menuRef} className="fixed inset-0 z-40" style={{ clipPath: 'circle(0% at calc(100% - 40px) 40px)', background: 'hsl(220 20% 4%)' }}>
+      <div ref={menuRef} className="fixed inset-0 z-[60] h-screen overflow-hidden" style={{ clipPath: 'circle(0% at calc(100% - 40px) 40px)', background: 'hsl(220 20% 4%)' }}>
         <div ref={menuItemsRef} className="h-full flex flex-col items-center justify-center container-custom">
           <div className="flex flex-col items-start gap-3 sm:gap-4 md:gap-6">
             {navLinks.map(link => (
               <Link key={link.path} to={link.path} className="menu-link group flex items-baseline gap-3 sm:gap-4 md:gap-8" style={{ perspective: '500px' }}>
                 <span className="text-primary text-xs sm:text-sm md:text-base font-body">{link.index}</span>
                 <span className={`text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-bold transition-all duration-300 ${location.pathname === link.path
-                    ? 'text-primary drop-shadow-[0_0_20px_hsla(187,100%,50%,0.3)]'
-                    : 'text-foreground group-hover:text-primary group-hover:drop-shadow-[0_0_20px_hsla(187,100%,50%,0.2)]'
+                  ? 'text-primary drop-shadow-[0_0_20px_hsla(187,100%,50%,0.3)]'
+                  : 'text-foreground group-hover:text-primary group-hover:drop-shadow-[0_0_20px_hsla(187,100%,50%,0.2)]'
                   }`}>
                   {link.label}
                 </span>
