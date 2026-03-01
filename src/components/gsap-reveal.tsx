@@ -108,3 +108,43 @@ export function GsapStaggerReveal({
         </div>
     );
 }
+
+export function GsapParallax({
+    children,
+    className = "",
+    speed = 0.5,
+}: {
+    children: React.ReactNode;
+    className?: string;
+    speed?: number;
+}) {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+
+        gsap.to(el, {
+            y: (i, target) => -ScrollTrigger.maxScroll(window) * (speed * 0.1),
+            ease: "none",
+            scrollTrigger: {
+                trigger: el,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true,
+            },
+        });
+
+        return () => {
+            ScrollTrigger.getAll().forEach((t) => {
+                if (t.trigger === el) t.kill();
+            });
+        };
+    }, [speed]);
+
+    return (
+        <div ref={ref} className={className}>
+            {children}
+        </div>
+    );
+}

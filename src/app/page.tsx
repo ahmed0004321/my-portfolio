@@ -6,7 +6,7 @@ import { TechMarquee } from "@/components/tech-marquee";
 import { SkillsGrid } from "@/components/skills-grid";
 import { SecurityInsights } from "@/components/security-insights";
 import { ProjectCard } from "@/components/project-card";
-import { GsapReveal } from "@/components/gsap-reveal";
+import { GsapReveal, GsapStaggerReveal, GsapParallax } from "@/components/gsap-reveal";
 
 const projects = [
   {
@@ -49,7 +49,7 @@ const projects = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background selection:bg-foreground selection:text-background">
+    <main className="min-h-screen selection:bg-foreground selection:text-background relative">
       <Navbar />
 
       <Hero />
@@ -81,15 +81,25 @@ export default function Home() {
       {/* About Section */}
       <section id="about" className="py-24 px-6 max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <GsapReveal>
-            <div className="aspect-[4/5] rounded-3xl bg-surface border border-border overflow-hidden relative group">
-              <img
-                src="/profile.jpg"
-                alt="Oasif Ahmed Rikto"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 opacity-60" />
-            </div>
+          <GsapReveal className="flex justify-center">
+            <GsapParallax speed={0.4} className="relative group w-full max-w-sm">
+              <div
+                className="aspect-square rounded-full overflow-hidden shadow-2xl relative"
+                style={{
+                  maskImage: 'radial-gradient(circle, black 45%, transparent 80%)',
+                  WebkitMaskImage: 'radial-gradient(circle, black 45%, transparent 80%)'
+                }}
+              >
+                <img
+                  src="/profile.jpg"
+                  alt="Oasif Ahmed Rikto"
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                />
+              </div>
+
+              {/* Subtle decorative glow ring */}
+              <div className="absolute -inset-4 border border-foreground/5 rounded-full -z-10 group-hover:scale-110 transition-transform duration-1000 opacity-20" />
+            </GsapParallax>
           </GsapReveal>
 
           <GsapReveal delay={0.2}>
