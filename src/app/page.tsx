@@ -1,65 +1,165 @@
-import Image from "next/image";
+"use client";
+
+import { Navbar } from "@/components/navbar";
+import { Hero } from "@/components/hero";
+import { TechMarquee } from "@/components/tech-marquee";
+import { SkillsGrid } from "@/components/skills-grid";
+import { SecurityInsights } from "@/components/security-insights";
+import { ProjectCard } from "@/components/project-card";
+import { GsapReveal } from "@/components/gsap-reveal";
+
+const projects = [
+  {
+    title: "Local Chef Bazaar",
+    description: "Local Chef Bazaar is a full-stack MERN marketplace that connects home chefs with local customers. Developed with a focus on security and scalability, it features role-based dashboards, Stripe payment integration, and JWT-secured routes. The platform empowers local entrepreneurs by providing them with the tools to manage a digital food business efficiently.",
+    tags: ["React", "Node.js", "Express.js", "MongoDB", "JWT", "Firebase", "Framer Motion", "Tanstack Query"],
+    status: "Latest",
+    images: [
+      "/projects/chef-1.png",
+      "/projects/chef-2.png",
+      "/projects/chef-3.png",
+      "/projects/chef-4.png",
+      "/projects/chef-5.png",
+    ],
+    liveLink: "https://local-chef-bazaar-client.vercel.app/",
+    repoLink: "https://github.com/ahmed0004321/local-chef-bazaar-client?tab=readme-ov-file",
+  },
+  {
+    title: "My Tools",
+    description: "My Tools is a high-performance React-based utility dashboard designed for developers. It centralizes essential tools like JSON formatters, secure password generators, and image compressors into a single, lightning-fast SPA. Built with Vite and Tailwind CSS, the project emphasizes client-side data privacy and seamless UX through modular architecture and responsive design.",
+    tags: ["React.js", "Vite", "Tailwind CSS", "Lucide React", "React Router", "LocalStorage API", "Firebase", "JWT"],
+    status: "Latest",
+    images: [
+      "/projects/mytools-1.png",
+      "/projects/mytools-2.png",
+      "/projects/mytools-3.png",
+      "/projects/mytools-4.png",
+      "/projects/mytools-5.png",
+    ],
+    liveLink: "https://peoject-my-tools.vercel.app/",
+    repoLink: "https://github.com/ahmed0004321/peoject-myTools?tab=readme-ov-file",
+  },
+  {
+    title: "VSCode Portfolio",
+    description: "Personal portfolio website inspired by VSCode's design, focusing on responsiveness and high-quality animations.",
+    tags: ["Next.js", "Tailwind", "GSAP", "Lenis"],
+    status: "Active",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="min-h-screen bg-background selection:bg-foreground selection:text-background">
+      <Navbar />
+
+      <Hero />
+
+      <TechMarquee />
+
+      {/* Projects Section */}
+      <section id="work" className="py-24 px-6 max-w-6xl mx-auto">
+        <GsapReveal>
+          <div className="flex items-center gap-4 mb-12">
+            <span className="text-2xl opacity-50 font-mono">{">_"}</span>
+            <h2 className="text-3xl font-bold tracking-tight">Recent Projects</h2>
+          </div>
+        </GsapReveal>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {projects.map((project, i) => (
+            <GsapReveal key={project.title} delay={i * 0.15}>
+              <ProjectCard {...project} />
+            </GsapReveal>
+          ))}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
+      </section>
+
+      <SkillsGrid />
+
+      <SecurityInsights />
+
+      {/* About Section */}
+      <section id="about" className="py-24 px-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <GsapReveal>
+            <div className="aspect-[4/5] rounded-3xl bg-surface border border-border overflow-hidden relative group">
+              <img
+                src="/profile.jpg"
+                alt="Oasif Ahmed Rikto"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 opacity-60" />
+            </div>
+          </GsapReveal>
+
+          <GsapReveal delay={0.2}>
+            <div>
+              <div className="flex items-center gap-4 mb-6">
+                <span className="text-2xl">☕️</span>
+                <h2 className="text-3xl font-bold tracking-tight">About Me</h2>
+              </div>
+
+              <p className="text-lg text-muted mb-6 leading-relaxed">
+                I am a passionate <span className="text-foreground font-semibold">Full Stack Developer</span> focused on building scalable, user-centric applications.
+              </p>
+
+              <p className="text-muted leading-relaxed mb-10">
+                I specialize in modern web technologies and have a strong interest in architecture and performance optimization. I love turning complex problems into elegant, efficient solutions.
+              </p>
+
+              <button className="px-8 py-3 rounded-full bg-foreground text-background font-bold hover:opacity-90 transition-opacity flex items-center gap-2">
+                Download Resume
+              </button>
+            </div>
+          </GsapReveal>
+        </div>
+      </section>
+
+      {/* Contact CTA */}
+      <GsapReveal>
+        <section id="contact" className="py-24 px-6 max-w-4xl mx-auto">
+          <div className="glass-card rounded-3xl p-16 text-center">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Let&apos;s work together.</h2>
+            <p className="text-muted text-lg mb-10 max-w-md mx-auto">
+              Have a project in mind? Let&apos;s build something amazing together.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <a
+                href="mailto:oasifrikto@gmail.com"
+                className="px-8 py-3 rounded-full bg-foreground text-background font-bold hover:opacity-90 transition-opacity"
+              >
+                Send an email
+              </a>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText("oasifrikto@gmail.com");
+                  alert("Email copied to clipboard!");
+                }}
+                className="px-8 py-3 rounded-full glass font-semibold hover:opacity-80 transition-opacity"
+              >
+                Copy email address
+              </button>
+            </div>
+          </div>
+        </section>
+      </GsapReveal>
+
+      {/* Footer */}
+      <footer className="py-12 px-6 border-t border-border text-center text-muted text-sm">
+        <p>© 2026 Oasif Ahmed Rikto. All rights reserved.</p>
+        <div className="flex items-center justify-center gap-6 mt-4">
+          <a href="#" className="hover:text-foreground transition-colors">Twitter</a>
           <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            href="https://www.linkedin.com/in/oasif-ahmed-rikto-30610b354/"
             target="_blank"
             rel="noopener noreferrer"
+            className="hover:text-foreground transition-colors"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
+            LinkedIn
           </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          <a href="#" className="hover:text-foreground transition-colors">GitHub</a>
         </div>
-      </main>
-    </div>
+      </footer>
+    </main>
   );
 }

@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Oasif Ahmed Rikto | Full Stack Developer Portfolio
 
-## Getting Started
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Version](https://img.shields.io/badge/version-1.0.0-green.svg)
+![Next.js](https://img.shields.io/badge/Next.js-15-black)
+![Tailwind](https://img.shields.io/badge/Tailwind-CSS-38B2AC)
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-Latest-FF1CF7)
 
-First, run the development server:
+A premium, high-performance developer portfolio built with **Next.js 15**, **Tailwind CSS**, and **Framer Motion**. Featuring a sophisticated "liquid-glass" aesthetic, smooth spring-based animations, and a seamless project showcase.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Key Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **💎 High-Fidelity Glassmorphism**: Custom "liquid-glass" effects with glowing edges and internal depth highlights.
+- **💧 Fluid Navigation**: A "Water Drop" navbar indicator that glides between routes using shared layout animations.
+- **🖼️ Immersive Project View**: Wide-format, single-column modal system with manual image carousels and smooth dismissibility.
+- **🛡️ Security-First Design**: Dedicated security insights section showcasing full-stack security expertise.
+- **🧈 Buttery Smooth Interactivity**: Intelligent "soothing" hover effects and spring-based physics across all components.
+- **📱 Fully Responsive**: Pixel-perfect layout across all devices, from high-res monitors to mobile screens.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Core**: Next.js 15 (App Router), React 19
+- **Styling**: Tailwind CSS (with custom glass utilities)
+- **Animations**: Framer Motion, GSAP
+- **Icons**: Lucide React, Simple Icons (Monochrome Gray transition)
+- **Deployment**: Optimized for Vercel
 
-## Learn More
+## 🚀 Getting Started
 
-To learn more about Next.js, take a look at the following resources:
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/ahmed0004321/my-portfolio.git
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Run the development server**:
+   ```bash
+   npm run dev
+   ```
 
-## Deploy on Vercel
+4. **Build for production**:
+   ```bash
+   npm run build
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🎨 Design Philosophy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The portfolio follows a **Dark Moody Aesthetic** with an emphasis on **Visual Excellence**. Every interaction is designed to feel intentional and fluid, avoiding generic animations in favor of custom-timed spring physics and glassmorphism that feels like real-world material.
+
+---
+
+Built with ❤️ by [Oasif Ahmed Rikto](https://www.linkedin.com/in/oasif-ahmed-rikto-30610b354/)

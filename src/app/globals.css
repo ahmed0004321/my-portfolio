@@ -1,26 +1,160 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: #3b82f6;
+
+  --font-sans: "Inter", var(--font-geist-sans);
+  --font-mono: "Geist Mono", var(--font-geist-mono);
+
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #fafafa;
+  --foreground: #171717;
+  --surface: #ffffff;
+  --muted: #737373;
+  --border: rgba(0, 0, 0, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.3);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-card-start: rgba(0, 0, 0, 0.03);
+  --glass-card-end: rgba(0, 0, 0, 0);
+  --glass-card-border: rgba(0, 0, 0, 0.06);
+  --scrollbar-track: #fafafa;
+  --scrollbar-thumb: #d4d4d4;
+  --scrollbar-hover: #a3a3a3;
+}
+
+.dark {
+  --background: #050505;
+  --foreground: #fafafa;
+  --surface: #0a0a0a;
+  --muted: #a3a3a3;
+  --border: rgba(255, 255, 255, 0.1);
+  --glass-bg: rgba(10, 10, 10, 0.3);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-card-start: rgba(255, 255, 255, 0.05);
+  --glass-card-end: rgba(255, 255, 255, 0);
+  --glass-card-border: rgba(255, 255, 255, 0.08);
+  --scrollbar-track: #050505;
+  --scrollbar-thumb: #262626;
+  --scrollbar-hover: #404040;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 0 0px 0px rgba(255, 255, 255, 0);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.8),
+        transparent);
+    z-index: 1;
+  }
+
+  .glass::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(180deg,
+        rgba(255, 255, 255, 0.8),
+        transparent,
+        rgba(255, 255, 255, 0.3));
+    z-index: 1;
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .text-gradient {
+    background: linear-gradient(to right, var(--foreground), var(--muted));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* GSAP reveal helper */
+  .gsap-reveal {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  /* Marquee fade mask */
+  .marquee-container {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  /* Hide scrollbar but keep scroll functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari and Opera */
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-hover);
 }
