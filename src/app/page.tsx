@@ -7,6 +7,7 @@ import { SkillsGrid } from "@/components/skills-grid";
 import { Journey } from "@/components/journey";
 import { ProjectCard } from "@/components/project-card";
 import { GsapReveal, GsapStaggerReveal, GsapParallax } from "@/components/gsap-reveal";
+import { Mail, Copy, Github, Linkedin, Twitter } from "lucide-react";
 
 const projects = [
   {
@@ -119,11 +120,15 @@ export default function Home() {
               </div>
 
               <p className="text-lg text-muted mb-6 leading-relaxed">
-                I am a passionate <span className="text-foreground font-semibold">Full Stack Developer</span> focused on building scalable, user-centric applications.
+                I’ve always been driven by a simple question: <span className="text-foreground font-semibold">How does the system work under the hood?</span> Whether it’s deconstructing a complex application or tuning a high-performance engine, I’m obsessed with the mechanics of how things run.
+              </p>
+
+              <p className="text-muted leading-relaxed mb-6">
+                As a <span className="text-foreground font-semibold">Full Stack Developer</span>, I bridge the gap between low-level logic and high-level design. I specialize in building fluid frontends with Next.js and JavaScript, while leveraging C++ and AI-driven design to optimize the core of every project. I’m a firm believer in the power of Open Source, contributing to the tools that move the web forward.
               </p>
 
               <p className="text-muted leading-relaxed mb-10">
-                I specialize in modern web technologies and have a strong interest in architecture and performance optimization. I love turning complex problems into elegant, efficient solutions.
+                When I’m not at my desk, you’ll find me in the world of motorsports, admiring the engineering of a fast car, or gaming to stay sharp.
               </p>
 
               <button className="px-8 py-3 rounded-full bg-foreground text-background font-bold hover:opacity-90 transition-opacity flex items-center gap-2">
@@ -137,27 +142,52 @@ export default function Home() {
       {/* Contact CTA */}
       <GsapReveal>
         <section id="contact" className="py-24 px-6 max-w-4xl mx-auto">
-          <div className="glass-card rounded-3xl p-16 text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Let&apos;s work together.</h2>
-            <p className="text-muted text-lg mb-10 max-w-md mx-auto">
-              Have a project in mind? Let&apos;s build something amazing together.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <a
-                href="mailto:oasifrikto@gmail.com"
-                className="px-8 py-3 rounded-full bg-foreground text-background font-bold hover:opacity-90 transition-opacity"
-              >
-                Send an email
-              </a>
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText("oasifrikto@gmail.com");
-                  alert("Email copied to clipboard!");
-                }}
-                className="px-8 py-3 rounded-full glass font-semibold hover:opacity-80 transition-opacity"
-              >
-                Copy email address
-              </button>
+          <div className="relative glass-card rounded-3xl p-12 md:p-16 text-center overflow-hidden">
+            {/* Ambient Background Glows */}
+            <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-foreground/5 blur-3xl pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-foreground/5 blur-3xl pointer-events-none"></div>
+
+            <div className="relative z-10 flex flex-col items-center">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
+                Let&apos;s build something <br className="hidden md:block" /> amazing together.
+              </h2>
+
+              <p className="text-muted text-lg mb-10 max-w-lg mx-auto leading-relaxed">
+                Whether you have a specific project in mind, need help navigating the complexities of modern web development, or just want to connect—my inbox is always open.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 w-full sm:w-auto">
+                <a
+                  href="mailto:oasifrikto@gmail.com"
+                  className="w-full sm:w-auto px-8 py-4 rounded-full bg-foreground text-background font-bold hover:scale-105 transition-transform flex items-center justify-center gap-2 group"
+                >
+                  <Mail className="w-5 h-5 group-hover:animate-bounce" />
+                  Say Hello
+                </a>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText("oasifrikto@gmail.com");
+                    alert("Email copied to clipboard!");
+                  }}
+                  className="w-full sm:w-auto px-8 py-4 rounded-full glass font-semibold hover:bg-foreground/5 transition-colors flex items-center justify-center gap-2 group"
+                >
+                  <Copy className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  Copy Email
+                </button>
+              </div>
+
+              {/* Social Links inside the card */}
+              <div className="flex items-center gap-6 justify-center">
+                <a href="https://github.com/ahmed0004321" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass text-muted hover:text-foreground transition-all duration-300 group">
+                  <Github className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                </a>
+                <a href="https://www.linkedin.com/in/oasif-ahmed-rikto-30610b354/" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full glass text-muted hover:text-[#0A66C2] transition-all duration-300 group">
+                  <Linkedin className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                </a>
+                <a href="#" className="p-3 rounded-full glass text-muted hover:text-[#1DA1F2] transition-all duration-300 group">
+                  <Twitter className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                </a>
+              </div>
             </div>
           </div>
         </section>

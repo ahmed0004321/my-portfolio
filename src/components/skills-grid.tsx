@@ -6,9 +6,8 @@ import { GsapStaggerReveal } from "./gsap-reveal";
 import {
     SiReact, SiNextdotjs, SiTypescript, SiNodedotjs,
     SiExpress, SiMongodb, SiPostgresql, SiTailwindcss,
-    SiDocker, SiAmazon, SiFigma, SiPython, SiFirebase, SiJsonwebtokens
+    SiDocker, SiFigma, SiPython, SiFirebase, SiJsonwebtokens
 } from "react-icons/si";
-import { ShieldCheck, Terminal } from "lucide-react";
 
 const skills = [
     { name: "React", category: "Frontend", icon: SiReact, level: 90 },
@@ -20,9 +19,6 @@ const skills = [
     { name: "PostgreSQL", category: "Database", icon: SiPostgresql, level: 65 },
     { name: "Tailwind CSS", category: "Styling", icon: SiTailwindcss, level: 95 },
     { name: "Docker", category: "DevOps", icon: SiDocker, level: 60 },
-    { name: "AWS", category: "Cloud", icon: SiAmazon, level: 55 },
-    { name: "Security Audit", category: "Security", icon: ShieldCheck, level: 85 },
-    { name: "Pen Testing", category: "Security", icon: Terminal, level: 75 },
     { name: "Figma", category: "Design", icon: SiFigma, level: 70 },
     { name: "Python", category: "Language", icon: SiPython, level: 80 },
     { name: "Firebase", category: "Backend", icon: SiFirebase, level: 75 },

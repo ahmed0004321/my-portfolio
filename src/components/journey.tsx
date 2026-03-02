@@ -5,11 +5,11 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
     SiJavascript, SiReact, SiNextdotjs, SiTypescript, SiNodedotjs, SiExpress,
-    SiMongodb, SiPostgresql, SiTailwindcss, SiDocker, SiAmazon, SiPython,
+    SiMongodb, SiPostgresql, SiTailwindcss, SiDocker, SiPython,
     SiFirebase, SiDjango, SiCplusplus, SiC, SiPostman, SiGithub, SiTableau, SiChartdotjs, SiD3Dotjs,
     SiHtml5, SiCss3, SiSwift
 } from "react-icons/si";
-import { Book, Award, Code2, Database, Terminal, Cpu, Tablet } from "lucide-react";
+import { Book, Award, Code2, Database, Terminal, Cpu, Tablet, Bot, Sparkles } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -39,7 +39,13 @@ const journeyData: JourneyItem[] = [
         title: "Full Stack Development",
         period: "2024 - 2025",
         description: "Transitioned into full-scale professional development. Focused on building high-performance, secure, and scalable MERN stack applications with integrated cloud services.",
-        icons: [SiJavascript, SiTypescript, SiReact, SiNextdotjs, SiNodedotjs, SiExpress, SiMongodb, SiTailwindcss, SiPostman, SiAmazon, SiDocker]
+        icons: [SiJavascript, SiTypescript, SiReact, SiNextdotjs, SiNodedotjs, SiExpress, SiMongodb, SiTailwindcss, SiPostman, SiDocker]
+    },
+    {
+        title: "AI-Enhanced Development",
+        period: "2025 - 2026",
+        description: "Mastering the integration of AI into the software engineering lifecycle. Developing a deep understanding of AI-assisted coding, advanced prompt engineering, and utilizing tools like ChatGPT, Claude Code, Antigravity, Cursor, and Windsurf to supercharge development workflows.",
+        icons: [Bot, Sparkles, Cpu, Terminal, Code2]
     }
 ];
 
@@ -64,6 +70,29 @@ export function Journey() {
             { scaleY: 0 },
             { scaleY: 1, ease: "none", transformOrigin: "top" }
         );
+
+        // Animate each journey item with stagger as you scroll
+        gsap.utils.toArray<HTMLElement>('.journey-item').forEach((item, index) => {
+            gsap.fromTo(item,
+                {
+                    y: 50,
+                    opacity: 0,
+                    scale: 0.9,
+                },
+                {
+                    y: 0,
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.8,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: item,
+                        start: "top 85%", // Trigger when top of item hits 85% of viewport height
+                        toggleActions: "play reverse play reverse", // Play animation when scrolling down, reverse when scrolling up
+                    }
+                }
+            );
+        });
 
         return () => {
             ScrollTrigger.getAll().forEach(t => t.kill());
@@ -92,7 +121,7 @@ export function Journey() {
                     {journeyData.map((item, index) => {
                         const isEven = index % 2 === 0;
                         return (
-                            <div key={index} className="relative flex items-center justify-between w-full group">
+                            <div key={index} className="journey-item relative flex items-center justify-between w-full group">
                                 {/* Mobile node (hidden on desktop) */}
                                 <div className="md:hidden absolute left-0 top-1.5 w-6 h-6 rounded-full border-2 border-foreground/20 bg-background z-10 flex items-center justify-center transition-colors group-hover:border-foreground/50">
                                     <div className="w-2 h-2 rounded-full bg-foreground/20 group-hover:bg-foreground transition-colors" />
