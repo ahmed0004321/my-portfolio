@@ -3,11 +3,14 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ThemeToggle } from "./theme-toggle";
 
 const navItems = [
     { name: "Home", href: "#" },
     { name: "Work", href: "#work" },
+    { name: "Skills", href: "#skills" },
+    { name: "Journey", href: "#journey" },
     { name: "About", href: "#about" },
     { name: "Contact", href: "#contact" },
 ];
@@ -15,8 +18,14 @@ const navItems = [
 export function Navbar() {
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
     const [activeItem, setActiveItem] = useState("Home");
+    const pathname = usePathname();
 
     useEffect(() => {
+        if (pathname === "/journey") {
+            setActiveItem("Journey");
+            return;
+        }
+
         const observerOptions = {
             root: null,
             threshold: 0.5,
@@ -26,7 +35,7 @@ export function Navbar() {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     const id = entry.target.id;
-                    const item = navItems.find((item) => item.href === `#${id}` || (id === "hero" && item.name === "Home"));
+                    const item = navItems.find((item) => item.href.endsWith(`#${id}`) || (id === "hero" && item.name === "Home"));
                     if (item) setActiveItem(item.name);
                 }
             });
@@ -35,24 +44,24 @@ export function Navbar() {
         const observer = new IntersectionObserver(observerCallback, observerOptions);
 
         // Sections to observe
-        const sections = ["hero", "work", "about", "contact"];
+        const sections = ["hero", "work", "skills", "journey", "about", "contact"];
         sections.forEach((id) => {
             const el = document.getElementById(id);
             if (el) observer.observe(el);
         });
 
         return () => observer.disconnect();
-    }, []);
+    }, [pathname]);
 
     return (
         <motion.header
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-2xl"
+            className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-3xl"
         >
-            <nav className="glass rounded-full px-4 py-2 flex items-center justify-between overflow-hidden">
+            <nav className="glass rounded-full px-4 py-2 flex items-center justify-between gap-2 overflow-hidden">
                 <div
-                    className="flex-1 flex items-center justify-between px-2 relative"
+                    className="flex-1 flex items-center justify-start sm:justify-between px-1 relative overflow-x-auto no-scrollbar"
                     onMouseLeave={() => setHoveredItem(null)}
                 >
                     {navItems.map((item) => {
@@ -63,7 +72,7 @@ export function Navbar() {
                                 href={item.href}
                                 onMouseEnter={() => setHoveredItem(item.name)}
                                 onClick={() => setActiveItem(item.name)}
-                                className={`text-[10px] sm:text-[11px] font-bold transition-all duration-300 relative px-4 py-2 z-10 tracking-widest uppercase ${isCurrent ? "text-foreground" : "text-muted/80"
+                                className={`text-[10px] sm:text-[11px] font-bold transition-all duration-300 relative px-2.5 sm:px-4 py-2 z-10 tracking-widest uppercase flex-shrink-0 ${isCurrent ? "text-foreground" : "text-muted/80"
                                     }`}
                             >
                                 {item.name}
@@ -83,13 +92,13 @@ export function Navbar() {
                     })}
                 </div>
 
-                <div className="flex items-center gap-4 pl-6 border-l border-border">
+                <div className="flex items-center gap-3 sm:gap-4 pl-3 sm:pl-6 border-l border-border flex-shrink-0">
                     <div className="flex items-center gap-2">
-                        <span className="relative flex h-2 w-2">
+                        <span className="relative flex h-2 w-2 flex-shrink-0">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                         </span>
-                        <span className="text-[10px] sm:text-xs font-medium text-muted uppercase tracking-wider hidden sm:inline-block">
+                        <span className="text-[9px] sm:text-xs font-medium text-muted uppercase tracking-wider hidden md:inline-block whitespace-nowrap">
                             Available
                         </span>
                     </div>

@@ -4,7 +4,7 @@ import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
 import { TechMarquee } from "@/components/tech-marquee";
 import { SkillsGrid } from "@/components/skills-grid";
-import { SecurityInsights } from "@/components/security-insights";
+import { Journey } from "@/components/journey";
 import { ProjectCard } from "@/components/project-card";
 import { GsapReveal, GsapStaggerReveal, GsapParallax } from "@/components/gsap-reveal";
 
@@ -38,6 +38,19 @@ const projects = [
     ],
     liveLink: "https://peoject-my-tools.vercel.app/",
     repoLink: "https://github.com/ahmed0004321/peoject-myTools?tab=readme-ov-file",
+  },
+  {
+    title: "Hero.io",
+    description: "Hero.io is a comprehensive, multi-page web application designed as an app marketplace and management ecosystem. The platform allows users to explore a catalog of mobile applications, view detailed analytics and user ratings for specific apps, and manage their personal installations through a dedicated dashboard.",
+    tags: ["React", "Netlify", "App Marketplace", "Analytics", "Dashboard", "Full Stack"],
+    status: "Latest",
+    images: [
+      "/projects/hero-io-4.png",
+      "/projects/hero-io-1.png",
+      "/projects/hero-io-2.png",
+      "/projects/hero-io-3.png",
+    ],
+    liveLink: "https://scintillating-parfait-b3d78e.netlify.app",
   },
   {
     title: "VSCode Portfolio",
@@ -75,8 +88,7 @@ export default function Home() {
       </section>
 
       <SkillsGrid />
-
-      <SecurityInsights />
+      <Journey />
 
       {/* About Section */}
       <section id="about" className="py-24 px-6 max-w-6xl mx-auto">
@@ -84,21 +96,18 @@ export default function Home() {
           <GsapReveal className="flex justify-center">
             <GsapParallax speed={0.4} className="relative group w-full max-w-sm">
               <div
-                className="aspect-square rounded-full overflow-hidden shadow-2xl relative"
+                className="relative overflow-hidden"
                 style={{
-                  maskImage: 'radial-gradient(circle, black 45%, transparent 80%)',
-                  WebkitMaskImage: 'radial-gradient(circle, black 45%, transparent 80%)'
+                  maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
+                  WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)'
                 }}
               >
                 <img
-                  src="/profile.jpg"
+                  src="/profile-bg.png"
                   alt="Oasif Ahmed Rikto"
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                  className="w-full h-auto object-contain transition-transform duration-1000 group-hover:scale-105 scale-x-[-1]"
                 />
               </div>
-
-              {/* Subtle decorative glow ring */}
-              <div className="absolute -inset-4 border border-foreground/5 rounded-full -z-10 group-hover:scale-110 transition-transform duration-1000 opacity-20" />
             </GsapParallax>
           </GsapReveal>
 
@@ -118,7 +127,7 @@ export default function Home() {
               </p>
 
               <button className="px-8 py-3 rounded-full bg-foreground text-background font-bold hover:opacity-90 transition-opacity flex items-center gap-2">
-                Download Resume
+                Resume
               </button>
             </div>
           </GsapReveal>

@@ -53,6 +53,11 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  cursor: none;
+}
+
+* {
+  cursor: none !important;
 }
 
 @layer utilities {
