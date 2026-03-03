@@ -132,7 +132,9 @@ export default function Home() {
               </p>
 
               <button className="px-8 py-3 rounded-full bg-foreground text-background font-bold hover:opacity-90 transition-opacity flex items-center gap-2">
-                Resume
+                <a href='https://drive.google.com/file/d/1u1eJkYcgpB14Nss5f-SOgRH9sSQ3frOy/view?usp=drive_link' target="_blank" rel="noopener noreferrer">
+                  Resume
+                </a>
               </button>
             </div>
           </GsapReveal>
