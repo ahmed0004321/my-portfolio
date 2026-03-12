@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Github, ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
 
@@ -11,6 +12,8 @@ interface ProjectCardProps {
     liveLink?: string;
     repoLink?: string;
 }
+
+const MotionImage = motion(Image);
 
 export function ProjectCard({ title, description, tags, status, images, liveLink, repoLink }: ProjectCardProps) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -88,15 +91,16 @@ export function ProjectCard({ title, description, tags, status, images, liveLink
                     <div className="w-full aspect-video rounded-xl bg-surface border border-border mb-8 relative overflow-hidden group/slider">
                         <AnimatePresence mode="wait">
                             {images && images.length > 0 ? (
-                                <motion.img
+                                <MotionImage
                                     key={images[currentImageIndex]}
                                     src={images[currentImageIndex]}
                                     alt={`${title} screenshot`}
+                                    fill
                                     initial={{ opacity: 0, x: 20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: -20 }}
                                     transition={{ duration: 0.4 }}
-                                    className="w-full h-full object-cover"
+                                    className="object-cover"
                                 />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center relative">
@@ -229,15 +233,16 @@ export function ProjectCard({ title, description, tags, status, images, liveLink
                                 <div className="w-full aspect-video md:aspect-[21/9] rounded-2xl bg-surface border border-border relative overflow-hidden group/modal-slider shadow-lg">
                                     <AnimatePresence mode="wait">
                                         {images && images.length > 0 ? (
-                                            <motion.img
+                                            <MotionImage
                                                 key={images[currentImageIndex]}
                                                 src={images[currentImageIndex]}
                                                 alt={`${title} screenshot`}
+                                                fill
                                                 initial={{ opacity: 0, scale: 1.05 }}
                                                 animate={{ opacity: 1, scale: 1 }}
                                                 exit={{ opacity: 0, scale: 0.95 }}
                                                 transition={{ duration: 0.5 }}
-                                                className="w-full h-full object-cover"
+                                                className="object-cover"
                                             />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center">

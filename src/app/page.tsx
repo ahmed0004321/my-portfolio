@@ -1,12 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
 import { TechMarquee } from "@/components/tech-marquee";
 import { SkillsGrid } from "@/components/skills-grid";
 import { Journey } from "@/components/journey";
 import { ProjectCard } from "@/components/project-card";
-import { GsapReveal, GsapStaggerReveal, GsapParallax } from "@/components/gsap-reveal";
+import { GsapReveal, GsapParallax } from "@/components/gsap-reveal";
 import { Mail, Copy, Github, Linkedin, Twitter } from "lucide-react";
 
 const projects = [
@@ -70,6 +71,10 @@ export default function Home() {
 
       <TechMarquee />
 
+      <SkillsGrid />
+
+      <Journey />
+
       {/* Projects Section */}
       <section id="work" className="py-24 px-6 max-w-6xl mx-auto">
         <GsapReveal>
@@ -88,9 +93,6 @@ export default function Home() {
         </div>
       </section>
 
-      <SkillsGrid />
-      <Journey />
-
       {/* About Section */}
       <section id="about" className="py-24 px-6 max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
@@ -103,9 +105,11 @@ export default function Home() {
                   WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)'
                 }}
               >
-                <img
+                <Image
                   src="/profile-bg.png"
                   alt="Oasif Ahmed Rikto"
+                  width={500}
+                  height={500}
                   className="w-full h-auto object-contain transition-transform duration-1000 group-hover:scale-105 scale-x-[-1]"
                 />
               </div>
