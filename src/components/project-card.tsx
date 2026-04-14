@@ -11,11 +11,13 @@ interface ProjectCardProps {
     images?: string[];
     liveLink?: string;
     repoLink?: string;
+    onEdit?: () => void;
+    onDelete?: () => void;
 }
 
 const MotionImage = motion(Image);
 
-export function ProjectCard({ title, description, tags, status, images, liveLink, repoLink }: ProjectCardProps) {
+export function ProjectCard({ title, description, tags, status, images, liveLink, repoLink, onEdit, onDelete }: ProjectCardProps) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -101,6 +103,7 @@ export function ProjectCard({ title, description, tags, status, images, liveLink
                                     exit={{ opacity: 0, x: -20 }}
                                     transition={{ duration: 0.4 }}
                                     className="object-cover"
+                                    unoptimized
                                 />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center relative">
@@ -243,6 +246,7 @@ export function ProjectCard({ title, description, tags, status, images, liveLink
                                                 exit={{ opacity: 0, scale: 0.95 }}
                                                 transition={{ duration: 0.5 }}
                                                 className="object-cover"
+                                                unoptimized
                                             />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center">
@@ -341,6 +345,29 @@ export function ProjectCard({ title, description, tags, status, images, liveLink
                                             <Github size={22} />
                                         </a>
                                     </div>
+                                    {(onEdit || onDelete) && (
+                                        <div
+                                            className="flex items-center gap-4 mt-4 pt-4 border-t border-border/50"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            {onEdit && (
+                                                <button
+                                                    onClick={onEdit}
+                                                    className="flex-1 py-3 rounded-xl border border-border bg-foreground/5 hover:bg-foreground/10 text-foreground text-sm font-semibold transition-all flex items-center justify-center gap-2"
+                                                >
+                                                    Edit Project
+                                                </button>
+                                            )}
+                                            {onDelete && (
+                                                <button
+                                                    onClick={onDelete}
+                                                    className="flex-1 py-3 rounded-xl border border-red-500/20 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-sm font-semibold transition-all flex items-center justify-center gap-2"
+                                                >
+                                                    Delete Project
+                                                </button>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </motion.div>

@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { GsapStaggerReveal } from "./gsap-reveal";
 import {
-    SiReact, SiNextdotjs, SiTypescript, SiNodedotjs,
+    SiReact, SiNextdotjs, SiTypescript, SiJavascript, SiNodedotjs,
     SiExpress, SiMongodb, SiPostgresql, SiTailwindcss,
     SiDocker, SiFigma, SiPython, SiFirebase, SiJsonwebtokens
 } from "react-icons/si";
@@ -12,6 +12,7 @@ import {
 const skills = [
     { name: "React", category: "Frontend", icon: SiReact, level: 90 },
     { name: "Next.js", category: "Frontend", icon: SiNextdotjs, level: 85 },
+    { name: "JavaScript", category: "Language", icon: SiJavascript, level: 85 },
     { name: "TypeScript", category: "Language", icon: SiTypescript, level: 80 },
     { name: "Node.js", category: "Backend", icon: SiNodedotjs, level: 75 },
     { name: "Express", category: "Backend", icon: SiExpress, level: 80 },
@@ -57,7 +58,7 @@ export function SkillsGrid() {
                                 </h3>
                             </div>
                             <span className="text-sm font-mono opacity-50 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                {skill.level}%
+                                100%
                             </span>
                         </div>
 
@@ -65,7 +66,7 @@ export function SkillsGrid() {
                         <div className="w-full h-1.5 bg-foreground/5 rounded-full overflow-hidden relative z-10">
                             <motion.div
                                 initial={{ width: 0 }}
-                                whileInView={{ width: `${skill.level}%` }}
+                                whileInView={{ width: `100%` }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
                                 className="h-full bg-foreground/30 group-hover:bg-foreground/50 transition-colors duration-500 rounded-full"

@@ -70,6 +70,10 @@ export default function Home() {
   const [passwordError, setPasswordError] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
 
+  type PendingAction = { type: "ADD" } | { type: "EDIT", project: CustomProject } | { type: "DELETE", id: string };
+  const [pendingAction, setPendingAction] = useState<PendingAction | null>(null);
+  const [editProjectData, setEditProjectData] = useState<CustomProject | null>(null);
+
   const OWNER_HASH = "731840f6fb7cdf7057bddeea86c9534e894d9b4fe8a3ed875d8c65ea74009046";
 
   async function hashPassword(password: string): Promise<string> {
@@ -80,13 +84,30 @@ export default function Home() {
     return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
   }
 
-  const handleAddClick = () => {
+  const handleAuthTrigger = (action: PendingAction) => {
     if (isVerified) {
-      setIsAddModalOpen(true);
+      executeAction(action);
     } else {
+      setPendingAction(action);
       setIsPasswordModalOpen(true);
       setPasswordInput("");
       setPasswordError(false);
+    }
+  };
+
+  const executeAction = (action: PendingAction) => {
+    if (action.type === "ADD") {
+      setEditProjectData(null);
+      setIsAddModalOpen(true);
+    } else if (action.type === "EDIT") {
+      setEditProjectData(action.project);
+      setIsAddModalOpen(true);
+    } else if (action.type === "DELETE") {
+      if (confirm("Are you sure you want to delete this project?")) {
+        const updated = customProjects.filter((p) => p.id !== action.id);
+        setCustomProjects(updated);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      }
     }
   };
 
@@ -97,7 +118,10 @@ export default function Home() {
       setIsPasswordModalOpen(false);
       setPasswordInput("");
       setPasswordError(false);
-      setIsAddModalOpen(true);
+      if (pendingAction) {
+        executeAction(pendingAction);
+        setPendingAction(null);
+      }
     } else {
       setPasswordError(true);
     }
@@ -107,8 +131,22 @@ export default function Home() {
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
+      const initialDefaults = defaultProjects.map((p, i) => ({ ...p, id: `default-${i}` })) as CustomProject[];
+      
       if (stored) {
-        setCustomProjects(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        const hasDefaults = parsed.some((p: CustomProject) => p.id && p.id.startsWith("default-"));
+        
+        if (!hasDefaults) {
+          const merged = [...initialDefaults, ...parsed];
+          setCustomProjects(merged);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+        } else {
+          setCustomProjects(parsed);
+        }
+      } else {
+        setCustomProjects(initialDefaults);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(initialDefaults));
       }
     } catch {
       // Ignore parse errors
@@ -116,7 +154,13 @@ export default function Home() {
   }, []);
 
   const saveProject = (project: CustomProject) => {
-    const updated = [...customProjects, project];
+    const isExisting = customProjects.some(p => p.id === project.id);
+    let updated;
+    if (isExisting) {
+        updated = customProjects.map(p => p.id === project.id ? project : p);
+    } else {
+        updated = [...customProjects, project];
+    }
     setCustomProjects(updated);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
   };
@@ -144,16 +188,9 @@ export default function Home() {
         </GsapReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Default Projects */}
-          {defaultProjects.map((project, i) => (
-            <GsapReveal key={project.title} delay={i * 0.15}>
-              <ProjectCard {...project} />
-            </GsapReveal>
-          ))}
-
-          {/* Custom Projects */}
+          {/* Projects (Unified) */}
           {customProjects.map((project, i) => (
-            <GsapReveal key={project.id} delay={(defaultProjects.length + i) * 0.15}>
+            <GsapReveal key={project.id} delay={i * 0.15}>
               <ProjectCard
                 title={project.title}
                 description={project.description}
@@ -162,13 +199,15 @@ export default function Home() {
                 images={project.images}
                 liveLink={project.liveLink}
                 repoLink={project.repoLink}
+                onEdit={() => handleAuthTrigger({ type: "EDIT", project })}
+                onDelete={() => handleAuthTrigger({ type: "DELETE", id: project.id })}
               />
             </GsapReveal>
           ))}
 
           {/* Add Project Card */}
-          <GsapReveal delay={(defaultProjects.length + customProjects.length) * 0.15}>
-            <AddProjectCard onClick={handleAddClick} />
+          <GsapReveal delay={customProjects.length * 0.15}>
+            <AddProjectCard onClick={() => handleAuthTrigger({ type: "ADD" })} />
           </GsapReveal>
         </div>
       </section>
@@ -250,6 +289,7 @@ export default function Home() {
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
         onSave={saveProject}
+        initialData={editProjectData}
       />
 
       {/* About Section */}

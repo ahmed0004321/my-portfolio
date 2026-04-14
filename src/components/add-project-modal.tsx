@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     Plus,
@@ -34,6 +34,7 @@ interface AddProjectModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSave: (project: CustomProject) => void;
+    initialData?: CustomProject | null;
 }
 
 export function AddProjectCard({ onClick }: { onClick: () => void }) {
@@ -86,7 +87,7 @@ export function AddProjectCard({ onClick }: { onClick: () => void }) {
     );
 }
 
-export function AddProjectModal({ isOpen, onClose, onSave }: AddProjectModalProps) {
+export function AddProjectModal({ isOpen, onClose, onSave, initialData }: AddProjectModalProps) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [tagInput, setTagInput] = useState("");
@@ -112,6 +113,20 @@ export function AddProjectModal({ isOpen, onClose, onSave }: AddProjectModalProp
         setCurrentPreview(0);
         setErrors({});
     };
+
+    useEffect(() => {
+        if (isOpen && initialData) {
+            setTitle(initialData.title || "");
+            setDescription(initialData.description || "");
+            setTags(initialData.tags || []);
+            setStatus(initialData.status || "Latest");
+            setImages(initialData.images || []);
+            setLiveLink(initialData.liveLink || "");
+            setRepoLink(initialData.repoLink || "");
+        } else if (isOpen && !initialData) {
+            resetForm();
+        }
+    }, [isOpen, initialData]);
 
     const handleClose = () => {
         resetForm();
@@ -202,7 +217,7 @@ export function AddProjectModal({ isOpen, onClose, onSave }: AddProjectModalProp
         if (!validate()) return;
 
         const project: CustomProject = {
-            id: `custom-${Date.now()}`,
+            id: initialData ? initialData.id : `custom-${Date.now()}`,
             title: title.trim(),
             description: description.trim(),
             tags,
@@ -248,7 +263,7 @@ export function AddProjectModal({ isOpen, onClose, onSave }: AddProjectModalProp
                                 <div className="p-2 rounded-xl bg-green-500/10 border border-green-500/20">
                                     <Sparkles size={18} className="text-green-400" />
                                 </div>
-                                <h2 className="text-lg font-bold tracking-tight">Add New Project</h2>
+                                <h2 className="text-lg font-bold tracking-tight">{initialData ? "Edit Project" : "Add New Project"}</h2>
                             </div>
                             <button
                                 onClick={handleClose}
@@ -518,7 +533,7 @@ export function AddProjectModal({ isOpen, onClose, onSave }: AddProjectModalProp
                                     className="flex-1 py-3.5 rounded-2xl bg-foreground text-background text-sm font-bold hover:scale-[1.02] active:scale-[0.98] transition-transform flex items-center justify-center gap-2 shadow-xl"
                                 >
                                     <Plus size={16} />
-                                    Add Project
+                                    {initialData ? "Save Changes" : "Add Project"}
                                 </button>
                             </div>
                         </div>
