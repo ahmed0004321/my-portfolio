@@ -12,6 +12,7 @@ import { ProjectCard } from "@/components/project-card";
 import { AddProjectCard, AddProjectModal, CustomProject } from "@/components/add-project-modal";
 import { GsapReveal, GsapParallax } from "@/components/gsap-reveal";
 import { Mail, Copy, Github, Linkedin, Twitter } from "lucide-react";
+import { getProjects, addProject, updateProject, deleteProject } from "@/actions/projects";
 
 const STORAGE_KEY = "portfolio-custom-projects";
 
@@ -95,7 +96,7 @@ export default function Home() {
     }
   };
 
-  const executeAction = (action: PendingAction) => {
+  const executeAction = async (action: PendingAction) => {
     if (action.type === "ADD") {
       setEditProjectData(null);
       setIsAddModalOpen(true);
@@ -104,11 +105,17 @@ export default function Home() {
       setIsAddModalOpen(true);
     } else if (action.type === "DELETE") {
       if (confirm("Are you sure you want to delete this project?")) {
-        const updated = customProjects.filter((p) => p.id !== action.id);
-        setCustomProjects(updated);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+        const { success } = await deleteProject(action.id);
+        if (success) {
+          setCustomProjects(customProjects.filter((p) => p.id !== action.id));
+        } else {
+          alert("Failed to delete project from database");
+        }
       }
     }
+    
+    // Always lock the system again immediately after action is granted!
+    setIsVerified(false);
   };
 
   const handlePasswordSubmit = async () => {
@@ -127,42 +134,66 @@ export default function Home() {
     }
   };
 
-  // Load custom projects from localStorage on mount
+  // Load custom projects from MongoDB on mount
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      const initialDefaults = defaultProjects.map((p, i) => ({ ...p, id: `default-${i}` })) as CustomProject[];
-      
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        const hasDefaults = parsed.some((p: CustomProject) => p.id && p.id.startsWith("default-"));
-        
-        if (!hasDefaults) {
-          const merged = [...initialDefaults, ...parsed];
-          setCustomProjects(merged);
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+    const fetchProjects = async () => {
+      try {
+        const dbProjects = await getProjects();
+        if (dbProjects && dbProjects.length > 0) {
+          setCustomProjects(dbProjects as CustomProject[]);
         } else {
-          setCustomProjects(parsed);
+          // If DB is empty, use defaults array, push to DB, then set state
+          const initialDefaults = defaultProjects.map(p => ({
+            title: p.title,
+            description: p.description,
+            tags: p.tags,
+            status: p.status,
+            images: p.images,
+            liveLink: p.liveLink,
+            repoLink: p.repoLink,
+          }));
+
+          const addedWithIds = [];
+          for (const proj of initialDefaults) {
+            const res = await addProject(proj);
+            if (res.success) addedWithIds.push({ ...proj, id: res.id });
+          }
+          setCustomProjects(addedWithIds as CustomProject[]);
         }
-      } else {
-        setCustomProjects(initialDefaults);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(initialDefaults));
+      } catch (e) {
+        console.error("Failed to load projects", e);
       }
-    } catch {
-      // Ignore parse errors
-    }
+    };
+    fetchProjects();
   }, []);
 
-  const saveProject = (project: CustomProject) => {
-    const isExisting = customProjects.some(p => p.id === project.id);
+  const saveProject = async (project: CustomProject) => {
+    const isExisting = project.id && !project.id.startsWith("custom-"); 
+    // ^ our previous local storage mock IDs were 'custom-...'. Now we use actual MongoDB IDs.
+
     let updated;
+    const { id, ...dataToSave } = project;
+
     if (isExisting) {
-        updated = customProjects.map(p => p.id === project.id ? project : p);
+      // update in DB
+      const res = await updateProject(id as string, dataToSave);
+      if (res.success) {
+        updated = customProjects.map((p) => (p.id === id ? project : p));
+        setCustomProjects(updated);
+      } else {
+         alert("Failed to update project in DB.");
+      }
     } else {
-        updated = [...customProjects, project];
+      // create new in DB
+      const res = await addProject(dataToSave);
+      if (res.success) {
+        const fullProject = { ...dataToSave, id: res.id };
+        updated = [...customProjects, fullProject];
+        setCustomProjects(updated as CustomProject[]);
+      } else {
+         alert("Failed to add project to DB.");
+      }
     }
-    setCustomProjects(updated);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
   };
 
 
