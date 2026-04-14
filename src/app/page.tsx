@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
@@ -7,10 +9,13 @@ import { TechMarquee } from "@/components/tech-marquee";
 import { SkillsGrid } from "@/components/skills-grid";
 import { Journey } from "@/components/journey";
 import { ProjectCard } from "@/components/project-card";
+import { AddProjectCard, AddProjectModal, CustomProject } from "@/components/add-project-modal";
 import { GsapReveal, GsapParallax } from "@/components/gsap-reveal";
 import { Mail, Copy, Github, Linkedin, Twitter } from "lucide-react";
 
-const projects = [
+const STORAGE_KEY = "portfolio-custom-projects";
+
+const defaultProjects = [
   {
     title: "Local Chef Bazaar",
     description: "Local Chef Bazaar is a full-stack MERN marketplace that connects home chefs with local customers. Developed with a focus on security and scalability, it features role-based dashboards, Stripe payment integration, and JWT-secured routes. The platform empowers local entrepreneurs by providing them with the tools to manage a digital food business efficiently.",
@@ -54,15 +59,69 @@ const projects = [
     ],
     liveLink: "https://scintillating-parfait-b3d78e.netlify.app",
   },
-  {
-    title: "VSCode Portfolio",
-    description: "Personal portfolio website inspired by VSCode's design, focusing on responsiveness and high-quality animations.",
-    tags: ["Next.js", "Tailwind", "GSAP", "Lenis"],
-    status: "Active",
-  },
+
 ];
 
 export default function Home() {
+  const [customProjects, setCustomProjects] = useState<CustomProject[]>([]);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
+
+  const OWNER_HASH = "731840f6fb7cdf7057bddeea86c9534e894d9b4fe8a3ed875d8c65ea74009046";
+
+  async function hashPassword(password: string): Promise<string> {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  const handleAddClick = () => {
+    if (isVerified) {
+      setIsAddModalOpen(true);
+    } else {
+      setIsPasswordModalOpen(true);
+      setPasswordInput("");
+      setPasswordError(false);
+    }
+  };
+
+  const handlePasswordSubmit = async () => {
+    const hashed = await hashPassword(passwordInput);
+    if (hashed === OWNER_HASH) {
+      setIsVerified(true);
+      setIsPasswordModalOpen(false);
+      setPasswordInput("");
+      setPasswordError(false);
+      setIsAddModalOpen(true);
+    } else {
+      setPasswordError(true);
+    }
+  };
+
+  // Load custom projects from localStorage on mount
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        setCustomProjects(JSON.parse(stored));
+      }
+    } catch {
+      // Ignore parse errors
+    }
+  }, []);
+
+  const saveProject = (project: CustomProject) => {
+    const updated = [...customProjects, project];
+    setCustomProjects(updated);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+  };
+
+
   return (
     <main className="min-h-screen selection:bg-foreground selection:text-background relative">
       <Navbar />
@@ -85,13 +144,113 @@ export default function Home() {
         </GsapReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {projects.map((project, i) => (
+          {/* Default Projects */}
+          {defaultProjects.map((project, i) => (
             <GsapReveal key={project.title} delay={i * 0.15}>
               <ProjectCard {...project} />
             </GsapReveal>
           ))}
+
+          {/* Custom Projects */}
+          {customProjects.map((project, i) => (
+            <GsapReveal key={project.id} delay={(defaultProjects.length + i) * 0.15}>
+              <ProjectCard
+                title={project.title}
+                description={project.description}
+                tags={project.tags}
+                status={project.status}
+                images={project.images}
+                liveLink={project.liveLink}
+                repoLink={project.repoLink}
+              />
+            </GsapReveal>
+          ))}
+
+          {/* Add Project Card */}
+          <GsapReveal delay={(defaultProjects.length + customProjects.length) * 0.15}>
+            <AddProjectCard onClick={handleAddClick} />
+          </GsapReveal>
         </div>
       </section>
+
+      {/* Password Verification Modal */}
+      <AnimatePresence>
+        {isPasswordModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ backdropFilter: "blur(0px)" }}
+              animate={{ backdropFilter: "blur(12px)" }}
+              className="absolute inset-0 bg-background/70"
+              onClick={() => setIsPasswordModalOpen(false)}
+            />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="glass-card w-full max-w-sm rounded-3xl relative z-10 border border-border/50 shadow-2xl p-8"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex flex-col items-center text-center mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-foreground/5 border border-border flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-foreground/60"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                </div>
+                <h3 className="text-xl font-bold tracking-tight">Verify Owner</h3>
+                <p className="text-sm text-muted/60 mt-1">Enter the owner password to continue</p>
+              </div>
+
+              <div className="mb-4">
+                <input
+                  type="password"
+                  value={passwordInput}
+                  onChange={(e) => {
+                    setPasswordInput(e.target.value);
+                    setPasswordError(false);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handlePasswordSubmit();
+                  }}
+                  placeholder="Enter password..."
+                  autoFocus
+                  className={`w-full px-4 py-3 rounded-xl bg-foreground/[0.03] border ${
+                    passwordError ? "border-red-400/50" : "border-border"
+                  } text-foreground placeholder:text-muted/30 focus:outline-none focus:ring-2 focus:ring-foreground/10 focus:border-foreground/20 transition-all text-sm text-center tracking-widest`}
+                />
+                {passwordError && (
+                  <p className="text-xs text-red-400 mt-2 text-center">Incorrect password. Access denied.</p>
+                )}
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setIsPasswordModalOpen(false)}
+                  className="flex-1 py-3 rounded-2xl border border-border text-sm font-semibold text-muted hover:text-foreground hover:bg-foreground/5 transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handlePasswordSubmit}
+                  className="flex-1 py-3 rounded-2xl bg-foreground text-background text-sm font-bold hover:scale-[1.02] active:scale-[0.98] transition-transform shadow-xl"
+                >
+                  Verify
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Add Project Modal */}
+      <AddProjectModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSave={saveProject}
+      />
 
       {/* About Section */}
       <section id="about" className="py-24 px-6 max-w-6xl mx-auto">
