@@ -113,7 +113,7 @@ export default function Home() {
         }
       }
     }
-    
+
     // Always lock the system again immediately after action is granted!
     setIsVerified(false);
   };
@@ -168,7 +168,7 @@ export default function Home() {
   }, []);
 
   const saveProject = async (project: CustomProject) => {
-    const isExisting = project.id && !project.id.startsWith("custom-"); 
+    const isExisting = project.id && !project.id.startsWith("custom-");
     // ^ our previous local storage mock IDs were 'custom-...'. Now we use actual MongoDB IDs.
 
     let updated;
@@ -181,7 +181,7 @@ export default function Home() {
         updated = customProjects.map((p) => (p.id === id ? project : p));
         setCustomProjects(updated);
       } else {
-         alert("Failed to update project in DB.");
+        alert("Failed to update project in DB.");
       }
     } else {
       // create new in DB
@@ -191,15 +191,15 @@ export default function Home() {
         updated = [...customProjects, fullProject];
         setCustomProjects(updated as CustomProject[]);
       } else {
-         alert("Failed to add project to DB.");
+        alert("Failed to add project to DB.");
       }
     }
   };
 
 
   return (
-    <main className="min-h-screen selection:bg-foreground selection:text-background relative">
-      <Navbar />
+    <main className="min-h-screen relative selection:bg-foreground/10">
+      <Navbar onAddProject={() => handleAuthTrigger({ type: "ADD" })} />
 
       <Hero />
 
@@ -235,11 +235,6 @@ export default function Home() {
               />
             </GsapReveal>
           ))}
-
-          {/* Add Project Card */}
-          <GsapReveal delay={customProjects.length * 0.15}>
-            <AddProjectCard onClick={() => handleAuthTrigger({ type: "ADD" })} />
-          </GsapReveal>
         </div>
       </section>
 
@@ -268,7 +263,7 @@ export default function Home() {
             >
               <div className="flex flex-col items-center text-center mb-6">
                 <div className="w-14 h-14 rounded-2xl bg-foreground/5 border border-border flex items-center justify-center mb-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-foreground/60"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-foreground/60"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
                 </div>
                 <h3 className="text-xl font-bold tracking-tight">Verify Owner</h3>
                 <p className="text-sm text-muted/60 mt-1">Enter the owner password to continue</p>
@@ -287,9 +282,8 @@ export default function Home() {
                   }}
                   placeholder="Enter password..."
                   autoFocus
-                  className={`w-full px-4 py-3 rounded-xl bg-foreground/[0.03] border ${
-                    passwordError ? "border-red-400/50" : "border-border"
-                  } text-foreground placeholder:text-muted/30 focus:outline-none focus:ring-2 focus:ring-foreground/10 focus:border-foreground/20 transition-all text-sm text-center tracking-widest`}
+                  className={`w-full px-4 py-3 rounded-xl bg-foreground/[0.03] border ${passwordError ? "border-red-400/50" : "border-border"
+                    } text-foreground placeholder:text-muted/30 focus:outline-none focus:ring-2 focus:ring-foreground/10 focus:border-foreground/20 transition-all text-sm text-center tracking-widest`}
                 />
                 {passwordError && (
                   <p className="text-xs text-red-400 mt-2 text-center">Incorrect password. Access denied.</p>
@@ -324,29 +318,33 @@ export default function Home() {
       />
 
       {/* About Section */}
-      <section id="about" className="py-24 px-6 max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <GsapReveal className="flex justify-center">
-            <GsapParallax speed={0.4} className="relative group w-full max-w-sm">
-              <div
-                className="relative overflow-hidden"
-                style={{
-                  maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
-                  WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)'
-                }}
-              >
-                <Image
-                  src="/profile-bg.png"
-                  alt="Oasif Ahmed Rikto"
-                  width={500}
-                  height={500}
-                  className="w-full h-auto object-contain transition-transform duration-1000 group-hover:scale-105 scale-x-[-1]"
-                />
+      <section id="about" className="py-24 px-6 max-w-6xl mx-auto overflow-hidden">
+        <div className="flex flex-col md:flex-row items-center gap-12 md:gap-16">
+          {/* Left Column: Image Area */}
+          <div className="w-full md:w-1/2 flex justify-center md:justify-end order-1 md:order-none">
+            <GsapReveal>
+              <div className="relative group w-full max-w-[280px] mx-auto md:mr-0">
+                <div 
+                  className="relative overflow-hidden w-full flex items-center justify-center text-center"
+                  style={{
+                    maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)',
+                    WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)'
+                  }}
+                >
+                  <Image
+                    src="/profile-bg.png"
+                    alt="Oasif Ahmed Rikto"
+                    width={400}
+                    height={400}
+                    className="w-full h-auto object-contain transition-transform duration-1000 group-hover:scale-105 scale-x-[-1]"
+                  />
+                </div>
               </div>
-            </GsapParallax>
-          </GsapReveal>
+            </GsapReveal>
+          </div>
 
-          <GsapReveal delay={0.2}>
+          <div className="w-full md:w-1/2 flex flex-col justify-center">
+            <GsapReveal delay={0.2}>
             <div>
               <div className="flex items-center gap-4 mb-6">
                 <span className="text-2xl">☕️</span>
@@ -373,7 +371,8 @@ export default function Home() {
             </div>
           </GsapReveal>
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* Contact CTA */}
       <GsapReveal>

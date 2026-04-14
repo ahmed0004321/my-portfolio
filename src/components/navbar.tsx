@@ -15,7 +15,7 @@ const navItems = [
     { name: "Contact", href: "#contact" },
 ];
 
-export function Navbar() {
+export function Navbar({ onAddProject }: { onAddProject: () => void }) {
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
     const [activeItem, setActiveItem] = useState("Home");
     const pathname = usePathname();
@@ -93,6 +93,13 @@ export function Navbar() {
                 </div>
 
                 <div className="flex items-center gap-3 sm:gap-4 pl-3 sm:pl-6 border-l border-border flex-shrink-0">
+                    <button 
+                        onClick={onAddProject}
+                        className="p-2 rounded-full hover:bg-foreground/5 transition-colors group relative"
+                        title="Add Project"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-foreground/70 group-hover:text-foreground transition-colors"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                    </button>
                     <div className="flex items-center gap-2">
                         <span className="relative flex h-2 w-2 flex-shrink-0">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
