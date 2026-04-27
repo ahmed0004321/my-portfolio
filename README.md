@@ -1,6 +1,6 @@
 # Oasif Ahmed Rikto | Full Stack Developer Portfolio
 
-Live Domain: (https://my-portfolio-six-xi-14.vercel.app/)
+Live Domain: (https://oasif-ahmed-rikto-portfolio.vercel.app/)
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Version](https://img.shields.io/badge/version-1.0.0-green.svg)
