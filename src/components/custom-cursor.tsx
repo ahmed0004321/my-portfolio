@@ -56,7 +56,7 @@ export function CustomCursor() {
     if (!isVisible) return null;
 
     return (
-        <div className="fixed inset-0 pointer-events-none z-[9999] mix-blend-difference">
+        <div className="fixed inset-0 pointer-events-none z-[100000] mix-blend-difference">
             {/* The primary small dot */}
             <motion.div
                 className="fixed top-0 left-0 w-2 h-2 bg-white rounded-full"

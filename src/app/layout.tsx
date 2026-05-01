@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { DotBackground } from "@/components/dot-background";
 import { CustomCursor } from "@/components/custom-cursor";
+import { CommandPalette } from "@/components/command-palette";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -19,10 +20,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased bg-background text-foreground transition-colors duration-300`}>
+      <body suppressHydrationWarning className={`${inter.variable} font-sans antialiased bg-background text-foreground transition-colors duration-300`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <CustomCursor />
           <DotBackground />
+          <CommandPalette />
           {children}
         </ThemeProvider>
       </body>

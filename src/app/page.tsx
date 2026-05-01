@@ -5,10 +5,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
+import { InteractiveTerminal } from "@/components/terminal";
 import { TechMarquee } from "@/components/tech-marquee";
 import { SkillsGrid } from "@/components/skills-grid";
 import { Journey } from "@/components/journey";
-import { ProjectCard } from "@/components/project-card";
+import { GithubCalendar } from "@/components/github-calendar";
+import { ProjectMarquee } from "@/components/project-marquee";
 import { AddProjectCard, AddProjectModal, CustomProject } from "@/components/add-project-modal";
 import { GsapReveal, GsapParallax } from "@/components/gsap-reveal";
 import { Mail, Copy, Github, Linkedin, Twitter } from "lucide-react";
@@ -136,7 +138,26 @@ export default function Home() {
 
   // Load custom projects from MongoDB on mount
   useEffect(() => {
-    const fetchProjects = async () => {
+    const handleAddFromPalette = () => handleAuthTrigger({ type: "ADD" });
+    const handleDBCheck = async () => {
+      const dbProjects = await getProjects();
+      if (dbProjects) {
+        alert(`🚀 Database Status: ONLINE\n📁 Projects Found: ${dbProjects.length}`);
+      } else {
+        alert("⚠️ Database Status: OFFLINE or UNREACHABLE");
+      }
+    };
+
+    window.addEventListener("trigger-add-project", handleAddFromPalette);
+    window.addEventListener("trigger-db-check", handleDBCheck);
+    return () => {
+      window.removeEventListener("trigger-add-project", handleAddFromPalette);
+      window.removeEventListener("trigger-db-check", handleDBCheck);
+    };
+  }, []);
+
+  useEffect(() => {
+    const loadProjects = async () => {
       try {
         const dbProjects = await getProjects();
         if (dbProjects && dbProjects.length > 0) {
@@ -164,7 +185,7 @@ export default function Home() {
         console.error("Failed to load projects", e);
       }
     };
-    fetchProjects();
+    loadProjects();
   }, []);
 
   const saveProject = async (project: CustomProject) => {
@@ -202,41 +223,35 @@ export default function Home() {
       <Navbar onAddProject={() => handleAuthTrigger({ type: "ADD" })} />
 
       <Hero />
-
       <TechMarquee />
 
       <SkillsGrid />
 
       <Journey />
 
-      {/* Projects Section */}
-      <section id="work" className="py-24 px-6 max-w-6xl mx-auto">
-        <GsapReveal>
-          <div className="flex items-center gap-4 mb-12">
-            <span className="text-2xl opacity-50 font-mono">{">_"}</span>
-            <h2 className="text-3xl font-bold tracking-tight">Recent Projects</h2>
-          </div>
-        </GsapReveal>
+      <GithubCalendar />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Projects (Unified) */}
-          {customProjects.map((project, i) => (
-            <GsapReveal key={project.id} delay={i * 0.15}>
-              <ProjectCard
-                title={project.title}
-                description={project.description}
-                tags={project.tags}
-                status={project.status}
-                images={project.images}
-                liveLink={project.liveLink}
-                repoLink={project.repoLink}
-                onEdit={() => handleAuthTrigger({ type: "EDIT", project })}
-                onDelete={() => handleAuthTrigger({ type: "DELETE", id: project.id })}
-              />
-            </GsapReveal>
-          ))}
+      {/* Projects Section */}
+      <section id="work" className="py-24 overflow-hidden">
+        <div className="px-6 max-w-6xl mx-auto mb-12">
+          <GsapReveal>
+            <div className="flex items-center gap-4">
+              <span className="text-2xl opacity-50 font-mono">{">_"}</span>
+              <h2 className="text-3xl font-bold tracking-tight">Recent Projects</h2>
+            </div>
+          </GsapReveal>
         </div>
+
+        <GsapReveal delay={0.2}>
+          <ProjectMarquee
+            projects={customProjects}
+            onEdit={(project) => handleAuthTrigger({ type: "EDIT", project })}
+            onDelete={(id) => handleAuthTrigger({ type: "DELETE", id })}
+          />
+        </GsapReveal>
       </section>
+
+
 
       {/* Password Verification Modal */}
       <AnimatePresence>
@@ -324,7 +339,7 @@ export default function Home() {
           <div className="w-full md:w-1/2 flex justify-center md:justify-end order-1 md:order-none">
             <GsapReveal>
               <div className="relative group w-full max-w-[280px] mx-auto md:mr-0">
-                <div 
+                <div
                   className="relative overflow-hidden w-full flex items-center justify-center text-center"
                   style={{
                     maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)',
@@ -345,34 +360,34 @@ export default function Home() {
 
           <div className="w-full md:w-1/2 flex flex-col justify-center">
             <GsapReveal delay={0.2}>
-            <div>
-              <div className="flex items-center gap-4 mb-6">
-                <span className="text-2xl">☕️</span>
-                <h2 className="text-3xl font-bold tracking-tight">About Me</h2>
+              <div>
+                <div className="flex items-center gap-4 mb-6">
+                  <span className="text-2xl">☕️</span>
+                  <h2 className="text-3xl font-bold tracking-tight">About Me</h2>
+                </div>
+
+                <p className="text-lg text-muted mb-6 leading-relaxed">
+                  I’ve always been driven by a simple question: <span className="text-foreground font-semibold">How does the system work under the hood?</span> Whether it’s deconstructing a complex application or tuning a high-performance engine, I’m obsessed with the mechanics of how things run.
+                </p>
+
+                <p className="text-muted leading-relaxed mb-6">
+                  As a <span className="text-foreground font-semibold">Full Stack Developer</span>, I bridge the gap between low-level logic and high-level design. I specialize in building fluid frontends with Next.js and JavaScript, while leveraging C++ and AI-driven design to optimize the core of every project. I’m a firm believer in the power of Open Source, contributing to the tools that move the web forward.
+                </p>
+
+                <p className="text-muted leading-relaxed mb-10">
+                  When I’m not at my desk, you’ll find me in the world of motorsports, admiring the engineering of a fast car, or gaming to stay sharp.
+                </p>
+
+                <button className="px-8 py-3 rounded-full bg-foreground text-background font-bold hover:opacity-90 transition-opacity flex items-center gap-2">
+                  <a href='https://drive.google.com/file/d/1u1eJkYcgpB14Nss5f-SOgRH9sSQ3frOy/view?usp=drive_link' target="_blank" rel="noopener noreferrer">
+                    Resume
+                  </a>
+                </button>
               </div>
-
-              <p className="text-lg text-muted mb-6 leading-relaxed">
-                I’ve always been driven by a simple question: <span className="text-foreground font-semibold">How does the system work under the hood?</span> Whether it’s deconstructing a complex application or tuning a high-performance engine, I’m obsessed with the mechanics of how things run.
-              </p>
-
-              <p className="text-muted leading-relaxed mb-6">
-                As a <span className="text-foreground font-semibold">Full Stack Developer</span>, I bridge the gap between low-level logic and high-level design. I specialize in building fluid frontends with Next.js and JavaScript, while leveraging C++ and AI-driven design to optimize the core of every project. I’m a firm believer in the power of Open Source, contributing to the tools that move the web forward.
-              </p>
-
-              <p className="text-muted leading-relaxed mb-10">
-                When I’m not at my desk, you’ll find me in the world of motorsports, admiring the engineering of a fast car, or gaming to stay sharp.
-              </p>
-
-              <button className="px-8 py-3 rounded-full bg-foreground text-background font-bold hover:opacity-90 transition-opacity flex items-center gap-2">
-                <a href='https://drive.google.com/file/d/1u1eJkYcgpB14Nss5f-SOgRH9sSQ3frOy/view?usp=drive_link' target="_blank" rel="noopener noreferrer">
-                  Resume
-                </a>
-              </button>
-            </div>
-          </GsapReveal>
+            </GsapReveal>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
       {/* Contact CTA */}
       <GsapReveal>
