@@ -42,12 +42,7 @@ export function Hero() {
                     >
                         Hello, I&apos;m{" "}
                         <span className="text-foreground block mt-2 whitespace-nowrap">
-                            <TypeAnimation
-                                sequence={["Oasif Ahmed Rikto.", 2000, "", 500]}
-                                wrapper="span"
-                                speed={50}
-                                repeat={Infinity}
-                            />
+                            Oasif Ahmed Rikto.
                         </span>
                     </motion.h1>
 
@@ -55,9 +50,20 @@ export function Hero() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="text-2xl md:text-3xl lg:text-4xl font-bold text-muted mb-8"
+                        className="text-2xl md:text-3xl lg:text-4xl font-bold text-muted mb-8 h-[1.2em]"
                     >
-                        Full Stack Developer.
+                        <TypeAnimation
+                            sequence={[
+                                "Full Stack Developer.", 2000,
+                                "MERN Stack Developer.", 2000,
+                                "Frontend Developer.", 2000,
+                                "React.js Developer.", 2000,
+                                "JavaScript Developer.", 2000,
+                            ]}
+                            wrapper="span"
+                            speed={50}
+                            repeat={Infinity}
+                        />
                     </motion.div>
 
                     <motion.p
