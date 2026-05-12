@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { GridBackground } from "@/components/grid-background";
 import { DotBackground } from "@/components/dot-background";
 import { CustomCursor } from "@/components/custom-cursor";
 import { CommandPalette } from "@/components/command-palette";
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body suppressHydrationWarning className={`${inter.variable} font-sans antialiased bg-background text-foreground transition-colors duration-300`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <CustomCursor />
+          <GridBackground />
           <DotBackground />
           <CommandPalette />
           {children}

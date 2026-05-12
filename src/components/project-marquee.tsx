@@ -23,7 +23,7 @@ export function ProjectMarquee({ projects, onEdit, onDelete }: ProjectMarqueePro
                 {duplicatedProjects.map((project, i) => (
                     <div 
                         key={`${project.id}-${i}`} 
-                        className="w-[600px] md:w-[850px] flex-shrink-0"
+                        className="w-[320px] md:w-[450px] flex-shrink-0"
                     >
                         <ProjectCard
                             title={project.title}

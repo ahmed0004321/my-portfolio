@@ -96,9 +96,9 @@ export function ProjectCard({ title, description, tags, status, images, liveLink
                     </span>
                 </div>
 
-                <div className="p-8 flex flex-col flex-1">
+                <div className="p-6 flex flex-col flex-1">
                     {/* Visual Slider */}
-                    <div className="w-full aspect-video rounded-xl bg-surface border border-border mb-8 relative overflow-hidden group/slider">
+                    <div className="w-full aspect-video rounded-xl bg-surface border border-border mb-6 relative overflow-hidden group/slider">
                         <AnimatePresence mode="wait">
                             {images && images.length > 0 ? (
                                 <MotionImage
@@ -151,15 +151,15 @@ export function ProjectCard({ title, description, tags, status, images, liveLink
                         )}
                     </div>
 
-                    <h3 className="text-2xl font-bold mb-4 group-hover:text-foreground transition-colors text-ellipsis overflow-hidden whitespace-nowrap">
+                    <h3 className="text-xl font-bold mb-3 group-hover:text-foreground transition-colors text-ellipsis overflow-hidden whitespace-nowrap">
                         {title}
                     </h3>
 
-                    <p className="text-muted leading-relaxed mb-8 flex-1 line-clamp-3 overflow-hidden">
+                    <p className="text-sm text-muted leading-relaxed mb-6 flex-1 line-clamp-3 overflow-hidden">
                         {description}
                     </p>
 
-                    <div className="flex flex-wrap gap-2 mb-8">
+                    <div className="flex flex-wrap gap-2 mb-6">
                         {tags.map((tag) => (
                             <span
                                 key={tag}

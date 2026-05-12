@@ -19,8 +19,8 @@ export function DotBackground() {
         let width = window.innerWidth;
         let height = window.innerHeight;
 
-        const dotSpacing = 30;
-        const dotRadius = 1;
+        const dotSpacing = 44;
+        const dotRadius = 1.5;
         const mouseRadius = 150;
 
         const resize = () => {

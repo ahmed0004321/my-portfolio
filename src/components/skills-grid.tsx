@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useEffect } from "react";
+import { motion, useMotionValue, useSpring, useTransform, useInView } from "framer-motion";
 import { GsapStaggerReveal } from "./gsap-reveal";
 import {
     SiReact, SiNextdotjs, SiTypescript, SiJavascript, SiNodedotjs,
@@ -25,6 +25,29 @@ const skills = [
     { name: "Firebase", category: "Backend", icon: SiFirebase, level: 75 },
     { name: "JWT", category: "Security", icon: SiJsonwebtokens, level: 90 },
 ];
+
+function Counter({ value, className }: { value: number, className?: string }) {
+    const motionValue = useMotionValue(0);
+    const springValue = useSpring(motionValue, {
+        damping: 30,
+        stiffness: 100,
+    });
+    const displayValue = useTransform(springValue, (latest) => Math.round(latest));
+    const ref = React.useRef(null);
+    const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+    useEffect(() => {
+        if (isInView) {
+            motionValue.set(value);
+        }
+    }, [isInView, value, motionValue]);
+
+    return (
+        <span ref={ref} className={className}>
+            <motion.span>{displayValue}</motion.span>%
+        </span>
+    );
+}
 
 export function SkillsGrid() {
     return (
@@ -57,17 +80,18 @@ export function SkillsGrid() {
                                     {skill.name}
                                 </h3>
                             </div>
-                            <span className="text-sm font-mono opacity-50 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                100%
-                            </span>
+                            <Counter 
+                                value={skill.level} 
+                                className="text-sm font-mono opacity-50 group-hover:opacity-100 transition-opacity whitespace-nowrap"
+                            />
                         </div>
 
                         {/* Progress Bar Container */}
                         <div className="w-full h-1.5 bg-foreground/5 rounded-full overflow-hidden relative z-10">
                             <motion.div
                                 initial={{ width: 0 }}
-                                whileInView={{ width: `100%` }}
-                                viewport={{ once: true }}
+                                whileInView={{ width: `${skill.level}%` }}
+                                viewport={{ once: true, margin: "-50px" }}
                                 transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
                                 className="h-full bg-foreground/30 group-hover:bg-foreground/50 transition-colors duration-500 rounded-full"
                             />
